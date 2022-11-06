@@ -1,58 +1,50 @@
 package FileAndGUI;
-
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Scanner;
+
 
 public class ReadAndWriteFile {
 
+    public String[] readFile(String pathname) throws Exception {
 
-    public ArrayList<String> readFile(String path) {
-        ArrayList<String> content = new ArrayList<>();
-        int numLine = 5;
-        try {
-            //read text files
-            File file = new File(path);
-            Scanner scanner1 = new Scanner(file);
-            //scan first five line in a file
-            for (int i = 0; i < numLine; i++) {
-                String data = scanner1.nextLine();
-                content.add(data);
-                System.out.println(data);
-            }
-            scanner1.close();
-        } catch (FileNotFoundException e) {
-            System.out.println("Failed to load file");
-            e.printStackTrace();
+        String line;
+        String readLine = null;
+        String writeLine = null;
+        int sumLine = 0;
+        //read text files
+        File file = new File(pathname);
+        BufferedReader read = new BufferedReader(new FileReader(file));
+        while ((line = read.readLine()) != null && sumLine < 5) {
+            //read first five line
+            readLine += line + "\n";
+            sumLine++;
+
+            // write first three field of first five line
+            String line1 = line.split(",")[0];
+            String line2 = line.split(",")[1];
+            String line3 = line.split(",")[2];
+            writeLine += line1 + "," + line2 + "," + line3 + "\n";
+
+
         }
-        return content;
+        String[] res = new String[2];
+        res[0] = readLine;
+        res[1] = writeLine;
+
+        return res;
     }
 
-
-    public ArrayList<String> writeFile(String path, String writingPath) {
-        ArrayList<String> writeContent = new ArrayList<>();
+    //write file
+    public void write (String filename, String info) {
         try {
-            String[] array;
-            File myFile = new File(path);
-            Scanner myScanner = new Scanner(myFile);
-            FileWriter myWriter = new FileWriter(writingPath);
-            BufferedWriter myBwriter = new BufferedWriter(myWriter);
-            while (myScanner.hasNextLine()) {
-                String data = myScanner.nextLine();
-                array = data.split(",");
-            }
-
+            FileWriter myWriter = new FileWriter(filename);
+            myWriter.write(info);
+            myWriter.close();
 
         } catch (IOException e) {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
-        return writeContent;
     }
 
 }
-
-
-
-
 
